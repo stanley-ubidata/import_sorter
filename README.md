@@ -34,7 +34,8 @@ This project needs a maintainer as I no longer work with dart and flutter. Pleas
 1. Dart imports
 2. Flutter imports
 3. Package imports
-4. Project imports
+4. Custom imports
+5. Project imports
 
 Below is an example:
 
