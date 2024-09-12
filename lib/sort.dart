@@ -22,15 +22,14 @@ ImportSortData sortImports(
   final afterImportLines = <String>[];
 
   final dartImports = <String>[];
-  final flutterImports = <String>[];
   final ubiPackageImports = <String>[];
   final packageImports = <String>[];
   final projectRelativeImports = <String>[];
   final projectImports = <String>[];
+  final internalImports = <String>[];
 
   bool noImports() =>
       dartImports.isEmpty &&
-      flutterImports.isEmpty &&
       ubiPackageImports.isEmpty &&
       packageImports.isEmpty &&
       projectImports.isEmpty &&
@@ -48,8 +47,6 @@ ImportSortData sortImports(
     if (lines[i].startsWith('import ') && lines[i].endsWith(';') && !isMultiLineString) {
       if (lines[i].contains('dart:')) {
         dartImports.add(lines[i]);
-      } else if (lines[i].contains('package:flutter/')) {
-        flutterImports.add(lines[i]);
       } else if (lines[i].contains('package:ubi')) {
         ubiPackageImports.add(lines[i]);
       } else if (lines[i].contains('package:$packageName/')) {
@@ -57,8 +54,10 @@ ImportSortData sortImports(
         projectImports.add(lines[i]);
       } else if (lines[i].contains('package:')) {
         packageImports.add(lines[i]);
-      } else {
+      } else if (lines[i].contains('./') || lines[i].contains('../')) {
         projectRelativeImports.add(lines[i]);
+      } else {
+        internalImports.add(lines[i]);
       }
     } else if (i != lines.length - 1 &&
         (lines[i] == dartImportComment(false) ||
@@ -110,14 +109,9 @@ ImportSortData sortImports(
     dartImports.sort();
     sortedLines.addAll(dartImports);
   }
-  if (flutterImports.isNotEmpty) {
-    if (dartImports.isNotEmpty) sortedLines.add('');
-    if (!noComments) sortedLines.add(flutterImportComment(emojis));
-    flutterImports.sort();
-    sortedLines.addAll(flutterImports);
-  }
+
   if (packageImports.isNotEmpty) {
-    if (dartImports.isNotEmpty || flutterImports.isNotEmpty) {
+    if (dartImports.isNotEmpty) {
       sortedLines.add('');
     }
     if (!noComments) sortedLines.add(packageImportComment(emojis));
@@ -126,7 +120,7 @@ ImportSortData sortImports(
   }
 
   if (ubiPackageImports.isNotEmpty) {
-    if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {
+    if (dartImports.isNotEmpty || packageImports.isNotEmpty) {
       sortedLines.add('');
     }
     if (!noComments) sortedLines.add(ubiPackageImportComment(emojis));
@@ -135,7 +129,7 @@ ImportSortData sortImports(
   }
 
   if (projectImports.isNotEmpty || projectRelativeImports.isNotEmpty) {
-    if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {
+    if (dartImports.isNotEmpty || packageImports.isNotEmpty) {
       sortedLines.add('');
     }
     if (!noComments) sortedLines.add(projectImportComment(emojis));
@@ -143,6 +137,16 @@ ImportSortData sortImports(
     projectRelativeImports.sort();
     sortedLines.addAll(projectImports);
     sortedLines.addAll(projectRelativeImports);
+  }
+
+  if (internalImports.isNotEmpty) {
+    if (dartImports.isNotEmpty ||
+        packageImports.isNotEmpty ||
+        projectImports.isNotEmpty ||
+        projectRelativeImports.isNotEmpty) {
+      sortedLines.add('');
+    }
+    sortedLines.addAll(internalImports);
   }
 
   sortedLines.add('');
