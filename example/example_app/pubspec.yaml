@@ -36,8 +36,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   import_sorter:
-    git:
-      url: https://github.com/stanley-ubidata/import_sorter.git
+    path: ../..
+  # import_sorter:
+  #   git:
+  #     url: https://github.com/stanley-ubidata/import_sorter.git
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -78,3 +80,4 @@ flutter:
 
 import_sorter:
   emojis: true
+  comments: false

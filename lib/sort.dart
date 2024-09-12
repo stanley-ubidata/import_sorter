@@ -48,13 +48,14 @@ ImportSortData sortImports(
     if (lines[i].startsWith('import ') && lines[i].endsWith(';') && !isMultiLineString) {
       if (lines[i].contains('dart:')) {
         dartImports.add(lines[i]);
-      } else if (lines[i].startsWith('package:flutter/')) {
+      } else if (lines[i].contains('package:flutter/')) {
         flutterImports.add(lines[i]);
-      } else if (lines[i].startsWith('package:ubi')) {
+      } else if (lines[i].contains('package:ubi')) {
         ubiPackageImports.add(lines[i]);
-      } else if (lines[i].startsWith('package:$packageName/')) {
+      } else if (lines[i].contains('package:$packageName/')) {
+        print('package: $packageName');
         projectImports.add(lines[i]);
-      } else if (lines[i].startsWith('package:')) {
+      } else if (lines[i].contains('package:')) {
         packageImports.add(lines[i]);
       } else {
         projectRelativeImports.add(lines[i]);
@@ -124,14 +125,14 @@ ImportSortData sortImports(
     sortedLines.addAll(packageImports);
   }
 
-  if (ubiPackageImports.isNotEmpty) {
-    if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {
-      sortedLines.add('');
-    }
-    if (!noComments) sortedLines.add(ubiPackageImportComment(emojis));
-    ubiPackageImports.sort();
-    sortedLines.addAll(ubiPackageImports);
-  }
+  // if (ubiPackageImports.isNotEmpty) {
+  //   if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {
+  //     sortedLines.add('');
+  //   }
+  //   if (!noComments) sortedLines.add(ubiPackageImportComment(emojis));
+  //   ubiPackageImports.sort();
+  //   sortedLines.addAll(ubiPackageImports);
+  // }
 
   if (projectImports.isNotEmpty || projectRelativeImports.isNotEmpty) {
     if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {

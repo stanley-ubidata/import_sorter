@@ -1,5 +1,6 @@
-import 'package:import_sorter/sort.dart';
 import 'package:test/test.dart';
+
+import 'package:import_sorter/sort.dart';
 
 void switcher(bool emojis, bool noComments) {
   const packageName = 'import_sorter_test';

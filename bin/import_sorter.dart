@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:tint/tint.dart';
+import 'package:yaml/yaml.dart';
+
 import 'package:import_sorter/args.dart' as local_args;
 import 'package:import_sorter/files.dart' as files;
 import 'package:import_sorter/sort.dart' as sort;
-import 'package:tint/tint.dart';
-import 'package:yaml/yaml.dart';
 
 void main(List<String> args) {
   // Parsing arguments
@@ -81,7 +82,7 @@ void main(List<String> args) {
 
   // Sorting and writing to files
   final sortedFiles = [];
-  final success = '✔'.green();
+  final success = '✔!'.green();
 
   for (final filePath in dartFiles.keys) {
     final file = dartFiles[filePath];
@@ -115,5 +116,5 @@ void main(List<String> args) {
     stdout.write('\n');
   }
   stdout.write(
-      '┗━━ $success Sorted! ${sortedFiles.length} files in ${stopwatch.elapsed.inSeconds}.${stopwatch.elapsedMilliseconds} seconds\n');
+      '┗━━ $success Sorted ${sortedFiles.length} files in ${stopwatch.elapsed.inSeconds}.${stopwatch.elapsedMilliseconds} seconds\n');
 }

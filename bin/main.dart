@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import './import_sorter.dart' as import_sorter;
 import 'package:tint/tint.dart';
+
+import './import_sorter.dart' as import_sorter;
 
 void main(List<String> args) {
   stdout.writeln(
