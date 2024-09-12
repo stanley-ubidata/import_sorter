@@ -1,4 +1,3 @@
-// 🎯 Dart imports:
 import 'dart:io';
 
 /// Get all the dart files for the project and the contents

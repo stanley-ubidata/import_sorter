@@ -1,14 +1,7 @@
-// 🎯 Dart imports:
 import 'dart:io';
 
-// 📦 Package imports:
-import 'package:tint/tint.dart';
-
-// Ubi Package imports:
-import 'package:ubi/ubi.dart';
-
-// 🌎 Project imports:
 import './import_sorter.dart' as import_sorter;
+import 'package:tint/tint.dart';
 
 void main(List<String> args) {
   stdout.writeln(

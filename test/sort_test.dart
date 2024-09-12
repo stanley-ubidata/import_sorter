@@ -1,8 +1,5 @@
-// 📦 Package imports:
-import 'package:test/test.dart';
-
-// 🌎 Project imports:
 import 'package:import_sorter/sort.dart';
+import 'package:test/test.dart';
 
 void switcher(bool emojis, bool noComments) {
   const packageName = 'import_sorter_test';

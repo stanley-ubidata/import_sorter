@@ -1,19 +1,11 @@
-// 🎯 Dart imports:
 import 'dart:io';
 
-// 📦 Package imports:
 import 'package:args/args.dart';
-import 'package:tint/tint.dart';
-import 'package:yaml/yaml.dart';
-
-// Ubi Package imports:
-import 'package:ubi/ubi.dart';
-import 'package:ubi_package/ubi_package.dart';
-
-// 🌎 Project imports:
 import 'package:import_sorter/args.dart' as local_args;
 import 'package:import_sorter/files.dart' as files;
 import 'package:import_sorter/sort.dart' as sort;
+import 'package:tint/tint.dart';
+import 'package:yaml/yaml.dart';
 
 void main(List<String> args) {
   // Parsing arguments
@@ -22,7 +14,7 @@ void main(List<String> args) {
   parser.addFlag('ignore-config', negatable: false);
   parser.addFlag('help', abbr: 'h', negatable: false);
   parser.addFlag('exit-if-changed', negatable: false);
-  parser.addFlag('no-comments', negatable: true);
+  parser.addFlag('no-comments', negatable: false);
   final argResults = parser.parse(args).arguments;
   if (argResults.contains('-h') || argResults.contains('--help')) {
     local_args.outputHelp();

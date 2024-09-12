@@ -1,4 +1,3 @@
-// 🎯 Dart imports:
 import 'dart:io';
 
 /// Sort the imports
