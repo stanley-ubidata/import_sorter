@@ -13,20 +13,19 @@ ImportSortData sortImports(
   bool noComments, {
   String? filePath,
 }) {
-  String dartImportComment(bool emojis) =>
-      '//${emojis ? ' 🎯 ' : ' '}Dart imports:';
-  String flutterImportComment(bool emojis) =>
-      '//${emojis ? ' 🐦 ' : ' '}Flutter imports:';
-  String packageImportComment(bool emojis) =>
-      '//${emojis ? ' 📦 ' : ' '}Package imports:';
-  String projectImportComment(bool emojis) =>
-      '//${emojis ? ' 🌎 ' : ' '}Project imports:';
+  String dartImportComment(bool emojis) => '//${emojis ? ' 🎯 ' : ' '}Dart imports:';
+  String flutterImportComment(bool emojis) => '//${emojis ? ' 🐦 ' : ' '}Flutter imports:';
+  String packageImportComment(bool emojis) => '//${emojis ? ' 📦 ' : ' '}Package imports:';
+
+  String ubiPackageImportComment(bool emojis) => '//${emojis ? ' 📦 ' : ' '}Ubi Package imports:';
+  String projectImportComment(bool emojis) => '//${emojis ? ' 🌎 ' : ' '}Project imports:';
 
   final beforeImportLines = <String>[];
   final afterImportLines = <String>[];
 
   final dartImports = <String>[];
   final flutterImports = <String>[];
+  final ubiPackageImports = <String>[];
   final packageImports = <String>[];
   final projectRelativeImports = <String>[];
   final projectImports = <String>[];
@@ -34,6 +33,7 @@ ImportSortData sortImports(
   bool noImports() =>
       dartImports.isEmpty &&
       flutterImports.isEmpty &&
+      ubiPackageImports.isEmpty &&
       packageImports.isEmpty &&
       projectImports.isEmpty &&
       projectRelativeImports.isEmpty;
@@ -42,19 +42,18 @@ ImportSortData sortImports(
 
   for (var i = 0; i < lines.length; i++) {
     // Check if line is in multiline string
-    if (_timesContained(lines[i], "'''") == 1 ||
-        _timesContained(lines[i], '"""') == 1) {
+    if (_timesContained(lines[i], "'''") == 1 || _timesContained(lines[i], '"""') == 1) {
       isMultiLineString = !isMultiLineString;
     }
 
     // If line is an import line
-    if (lines[i].startsWith('import ') &&
-        lines[i].endsWith(';') &&
-        !isMultiLineString) {
+    if (lines[i].startsWith('import ') && lines[i].endsWith(';') && !isMultiLineString) {
       if (lines[i].contains('dart:')) {
         dartImports.add(lines[i]);
       } else if (lines[i].contains('package:flutter/')) {
         flutterImports.add(lines[i]);
+      } else if (lines[i].contains('package:ubi/')) {
+        ubiPackageImports.add(lines[i]);
       } else if (lines[i].contains('package:$packageName/')) {
         projectImports.add(lines[i]);
       } else if (lines[i].contains('package:')) {
@@ -66,6 +65,7 @@ ImportSortData sortImports(
         (lines[i] == dartImportComment(false) ||
             lines[i] == flutterImportComment(false) ||
             lines[i] == packageImportComment(false) ||
+            lines[i] == ubiPackageImportComment(false) ||
             lines[i] == projectImportComment(false) ||
             lines[i] == dartImportComment(true) ||
             lines[i] == flutterImportComment(true) ||
@@ -124,10 +124,18 @@ ImportSortData sortImports(
     packageImports.sort();
     sortedLines.addAll(packageImports);
   }
+
+  if (ubiPackageImports.isNotEmpty) {
+    if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {
+      sortedLines.add('');
+    }
+    if (!noComments) sortedLines.add(ubiPackageImportComment(emojis));
+    ubiPackageImports.sort();
+    sortedLines.addAll(ubiPackageImports);
+  }
+
   if (projectImports.isNotEmpty || projectRelativeImports.isNotEmpty) {
-    if (dartImports.isNotEmpty ||
-        flutterImports.isNotEmpty ||
-        packageImports.isNotEmpty) {
+    if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {
       sortedLines.add('');
     }
     if (!noComments) sortedLines.add(projectImportComment(emojis));
@@ -155,8 +163,7 @@ ImportSortData sortImports(
   final original = '${lines.join('\n')}\n';
   if (exitIfChanged && original != sortedFile) {
     if (filePath != null) {
-      stdout
-          .writeln('\n┗━━🚨 File $filePath does not have its imports sorted.');
+      stdout.writeln('\n┗━━🚨 File $filePath does not have its imports sorted.');
     }
     exit(1);
   }
@@ -169,8 +176,7 @@ ImportSortData sortImports(
 
 /// Get the number of times a string contains another
 /// string
-int _timesContained(String string, String looking) =>
-    string.split(looking).length - 1;
+int _timesContained(String string, String looking) => string.split(looking).length - 1;
 
 /// Data to return from a sort
 class ImportSortData {

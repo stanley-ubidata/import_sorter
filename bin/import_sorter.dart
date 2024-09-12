@@ -6,6 +6,10 @@ import 'package:args/args.dart';
 import 'package:tint/tint.dart';
 import 'package:yaml/yaml.dart';
 
+// Ubi Package imports:
+import 'package:ubi/ubi.dart';
+import 'package:ubi_package/ubi_package.dart';
+
 // 🌎 Project imports:
 import 'package:import_sorter/args.dart' as local_args;
 import 'package:import_sorter/files.dart' as files;
@@ -45,7 +49,7 @@ void main(List<String> args) {
   dependencies.addAll(pubspecLock['packages'].keys);
 
   var emojis = false;
-  var noComments = false;
+  var noComments = true;
   final ignoredFiles = [];
 
   // Reading from config in pubspec.yaml safely
@@ -68,8 +72,7 @@ void main(List<String> args) {
   // Getting all the dart files for the project
   final dartFiles = files.dartFiles(currentPath, args);
   final containsFlutter = dependencies.contains('flutter');
-  final containsRegistrant = dartFiles
-      .containsKey('$currentPath/lib/generated_plugin_registrant.dart');
+  final containsRegistrant = dartFiles.containsKey('$currentPath/lib/generated_plugin_registrant.dart');
 
   stdout.writeln('contains flutter: $containsFlutter');
   stdout.writeln('contains registrant: $containsRegistrant');
@@ -79,8 +82,7 @@ void main(List<String> args) {
   }
 
   for (final pattern in ignoredFiles) {
-    dartFiles.removeWhere((key, _) =>
-        RegExp(pattern).hasMatch(key.replaceFirst(currentPath, '')));
+    dartFiles.removeWhere((key, _) => RegExp(pattern).hasMatch(key.replaceFirst(currentPath, '')));
   }
 
   stdout.write('┏━━ Sorting ${dartFiles.length} dart files');
@@ -95,8 +97,7 @@ void main(List<String> args) {
       continue;
     }
 
-    final sortedFile = sort.sortImports(
-        file.readAsLinesSync(), packageName, emojis, exitOnChange, noComments);
+    final sortedFile = sort.sortImports(file.readAsLinesSync(), packageName, emojis, exitOnChange, noComments);
     if (!sortedFile.updated) {
       continue;
     }
