@@ -125,14 +125,14 @@ ImportSortData sortImports(
     sortedLines.addAll(packageImports);
   }
 
-  // if (ubiPackageImports.isNotEmpty) {
-  //   if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {
-  //     sortedLines.add('');
-  //   }
-  //   if (!noComments) sortedLines.add(ubiPackageImportComment(emojis));
-  //   ubiPackageImports.sort();
-  //   sortedLines.addAll(ubiPackageImports);
-  // }
+  if (ubiPackageImports.isNotEmpty) {
+    if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {
+      sortedLines.add('');
+    }
+    if (!noComments) sortedLines.add(ubiPackageImportComment(emojis));
+    ubiPackageImports.sort();
+    sortedLines.addAll(ubiPackageImports);
+  }
 
   if (projectImports.isNotEmpty || projectRelativeImports.isNotEmpty) {
     if (dartImports.isNotEmpty || flutterImports.isNotEmpty || packageImports.isNotEmpty) {

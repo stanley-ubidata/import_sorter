@@ -11,6 +11,8 @@ environment:
 dependencies:
   args: ^2.4.2
   tint: ^2.0.1
+  ubidots:
+    path: ./example/ubidots
   yaml: ^3.1.2
 
 dev_dependencies:
