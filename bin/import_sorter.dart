@@ -67,6 +67,7 @@ void main(List<String> args) {
   final containsFlutter = dependencies.contains('flutter');
   final containsRegistrant = dartFiles.containsKey('$currentPath/lib/generated_plugin_registrant.dart');
 
+  stdout.writeln('📦 Ubi formatter is running'.blue());
   stdout.writeln('contains flutter: $containsFlutter');
   stdout.writeln('contains registrant: $containsRegistrant');
 
@@ -82,7 +83,7 @@ void main(List<String> args) {
 
   // Sorting and writing to files
   final sortedFiles = [];
-  final success = '✔!'.green();
+  final success = '✔'.green();
 
   for (final filePath in dartFiles.keys) {
     final file = dartFiles[filePath];
