@@ -50,13 +50,13 @@ ImportSortData sortImports(
     if (lines[i].startsWith('import ') && lines[i].endsWith(';') && !isMultiLineString) {
       if (lines[i].contains('dart:')) {
         dartImports.add(lines[i]);
-      } else if (lines[i].contains('package:flutter/')) {
+      } else if (lines[i].startsWith('package:flutter/')) {
         flutterImports.add(lines[i]);
-      } else if (lines[i].contains('package:ubi/')) {
+      } else if (lines[i].startsWith('package:ubi')) {
         ubiPackageImports.add(lines[i]);
-      } else if (lines[i].contains('package:$packageName/')) {
+      } else if (lines[i].startsWith('package:$packageName/')) {
         projectImports.add(lines[i]);
-      } else if (lines[i].contains('package:')) {
+      } else if (lines[i].startsWith('package:')) {
         packageImports.add(lines[i]);
       } else {
         projectRelativeImports.add(lines[i]);
@@ -70,6 +70,7 @@ ImportSortData sortImports(
             lines[i] == dartImportComment(true) ||
             lines[i] == flutterImportComment(true) ||
             lines[i] == packageImportComment(true) ||
+            lines[i] == ubiPackageImportComment(true) ||
             lines[i] == projectImportComment(true) ||
             lines[i] == '// 📱 Flutter imports:') &&
         lines[i + 1].startsWith('import ') &&
