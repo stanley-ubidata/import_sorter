@@ -16,7 +16,6 @@ ImportSortData sortImports(
   String dartImportComment(bool emojis) => '//${emojis ? ' 🎯 ' : ' '}Dart imports:';
   String flutterImportComment(bool emojis) => '//${emojis ? ' 🐦 ' : ' '}Flutter imports:';
   String packageImportComment(bool emojis) => '//${emojis ? ' 📦 ' : ' '}Package imports:';
-
   String ubiPackageImportComment(bool emojis) => '//${emojis ? ' 📦 ' : ' '}Ubi Package imports:';
   String projectImportComment(bool emojis) => '//${emojis ? ' 🌎 ' : ' '}Project imports:';
 

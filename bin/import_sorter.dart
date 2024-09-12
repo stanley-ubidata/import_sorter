@@ -22,7 +22,7 @@ void main(List<String> args) {
   parser.addFlag('ignore-config', negatable: false);
   parser.addFlag('help', abbr: 'h', negatable: false);
   parser.addFlag('exit-if-changed', negatable: false);
-  parser.addFlag('no-comments', negatable: false);
+  parser.addFlag('no-comments', negatable: true);
   final argResults = parser.parse(args).arguments;
   if (argResults.contains('-h') || argResults.contains('--help')) {
     local_args.outputHelp();
